@@ -1,5 +1,6 @@
-# tinyurl
-a small program to shorten URLs for users to generate tiny url, which they can visit later to be redirected to the original url.
+# crudDemo
+A small spring boot program that exposes REST endpoints for CRUD operations on a simple DB table.
+
 Your need Apache Maven to build and need java 1.8+ to run the application.
 
 ## How to build
@@ -19,56 +20,65 @@ $ mvn clean test
 ```shell
 mvn spring-boot:run
 ```
-You can then generate a tiny url from http://localhost:8080/.
-You can use your tiny url to be redirected to your original url by visiting http://localhost:8080/{tinyUrl} 
+You can then access to the crud endpoints at http://localhost:8080/employees.
+You can also import crudDemo.postman_collection.json into your postman app and test the endpoints.
 
 
 ## Design/Implementation notes:
 
-1. An in-memory H2 DB is utilized to store the tiny urls. The application can be easily configured to work with any DB. 
-	By using a DB to store data, application can be easily scaled by adding more instances, and can handle fail-over (fault tolerant). Load balancing can be easily achieved.
+1. An in-memory H2 DB is utilized to store employees table. The application can be easily configured to work with any DB. 
 
-2. Two in-memory hashmap data structure are utilized to implement a cache service, in an effort to reduce calls to DB therefore improve performance/response.
-	However, this implementation is subject to the available memory space in the system, and therefore might crash the app when the cache memory usage exceeds system availability.
-	A more sophisticated implementation could be a distributed and scalable cache solution, e.g. redis cache. 
-	Interfaces are utilized to implement the application therefore another implementation of cache service can be easily configured to provide the needed functionality.
+2. I created an interface for the service methods, so that a different implementation (e.g. getting data from kafka stream, or querying a 3rd party service, etc.) can be easily configured to provide the functionality.
 
-3. Asynchronous programming are utilized to implement cache service in an effort to further improve performance. 
+3. Hibernate implementation of javax validations are utilized to validate the json input data.
 
-4. The algorithm to generate tiny urls are implemented as a separate service/module, and again interface is utilized, so that a different implementation can be easily configured to provide the functionality.
+4. ControllerAdvice is utilized to handle error response to the clients.
 
-5. Comprehensive test cases are developed to provide unit testing and integration testing to ensure code quality and facilitate future enhancement/maintenance. 
+5. A dto object is utilized to provide a clean separation of entity DB object (employee) in favor clean abstraction of persistence layer. ModelMapper library is utilized to provide data transformation of dto and entity objects.
 
-6. Spring properties/configuration/injection are utilized to ease future enhancement/maintenance efforts. 
+6. Lombok library is utilized for complie-time code auto generation (getters/setters/contrctors).
+
+7. Comprehensive test cases are developed to provide unit testing and integration testing to ensure code quality and facilitate future enhancement/maintenance. 
+
+8. Spring properties/configuration/injection are utilized to ease future enhancement/maintenance efforts. 
+
+9. spring-boot-starter-actuator is included to provide production level monitoring/management tool.
 
 
 ### Requirements Description:
 
-URL Shortener Code Exercise
+RESTful CRUD service
+Summary
+
+Build a simple RESTful CRUD service for managing an employee data.  The schema for the employee object is as follows, assume all fields are required. 
+ID:  <Int32> 
+Name:  <String 100 Characters>,
+Office:  <String 4 Characters>, Range 100A – 599F,
+Email: <String 150 Characters>,
+Phone: <String 12 Characters>,
+Role:  <String 150 Characters> 
+
+Some Sample records are provided in the attached JSON file:
+
+{
+  "id" : 5,
+  "name": "Michael Stone",
+  "office": "321b",
+  "email" : "michael.stone@oscorp.com",
+  "phone" : "415.331.3321",
+  "role" : "Teir 3 Support Engineer"
+}
+
+Service Requirements
+
+•	The service should be written in Java
+•	The service should provide basic CRUD functionality
+o	Create 
+o	Read (List, and single)
+o	Update
+o	Delete 
+•	Records can be stored in memory persistence is not required. 
+•	Treat this a live service. Include all of the elements you would expect to see in a production level system. 
+•	Include a README file describing how to build and run the service 
  
-Here’s the coding task that we would like you to complete as part of our assessment. Please be sure to read and follow all of the directions. The team is looking for a thorough and thoughtful submission as a zip or Git archive (preferred).
- 
- 
-[Architecture question] URL Shortener
- 
-We'd like you to build a website that functions as a URL Shortener:
- 
-1. A user should be able to load the index page of your site and be presented with an input field where they can enter a URL.
-2. Upon entering the URL, a "shortened" version of that url is created and shown to the user as a URL to the site you're building.
-3. When visiting that "shortened" version of the URL, the user is redirected to the original URL.
-4. Additionally, if a URL has already been shortened by the system, and it is entered a second time, the first shortened URL should be given back to the user.
- 
-For example, if I enter http://www.apple.com/iphone-7/ into the input field, and I'm running the app locally on port 9000, I'd expect to be given back a URL that looked something like http://localhost:9000/1. Then when I visit http://localhost:9000/1, I am redirected to http://www.apple.com/iphone-7/.
- 
-Expectations
-•	Straight HTML. No need for any CSS.
-•	Submit the project as a Git archive. Do not include artifacts. We might look at the history.
-•	A small README is appreciated. A few words about your approach? How to compile/launch your application?
-•	You may have to make some assumptions. It is expected. Please explain them.
-•	Good developers write unit tests.
-•	We do use Scala but it is not necessary here. Use the JVM stack you are most comfortable with. During the on-site interview, we will expect you to be an expert.
-•	No project is ever done/complete. Your job is to convince us that you understood the problem and that we want to discuss your approach with you.
-•	You really want to use a hash function? Think twice and motivate your choice.
-•	You may want to use external dependencies e.g. database. It's totally fine! Just tell us more about your choice.
- 
- 
+

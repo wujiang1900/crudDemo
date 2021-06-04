@@ -1,0 +1,89 @@
+{
+	"variables": [],
+	"info": {
+		"name": "crudDemo",
+		"_postman_id": "9ff8c928-9a54-730a-6ec1-722f459405b4",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "LIST",
+			"request": {
+				"url": "localhost:8080/employees",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "GET BY ID",
+			"request": {
+				"url": "localhost:8080/employees/1",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE",
+			"request": {
+				"url": "localhost:8080/employees/2",
+				"method": "DELETE",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "PUT",
+			"request": {
+				"url": "localhost:8080/employees/1",
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"id\":0,\n  \"name\": \"Michael Stone\",\n  \"office\": \"321C\",\n  \"email\" : \"michael.stone@oscorp.com\",\n  \"phone\" : \"415.331.3325\",\n  \"role\" : \"Teir 3 Support Engineer\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "CREATE",
+			"request": {
+				"url": "localhost:8080/employees",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"Michael Stone 2\",\n  \"office\": \"327d\",\n  \"email\" : \"michael.stone@oscorp.cm\",\n  \"phone\" : \"415.331 3321\",\n  \"role\" : \"Teir 3 Support Engineer\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
